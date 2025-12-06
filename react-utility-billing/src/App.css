@@ -1,0 +1,304 @@
+:root {
+  --primary: #2c3e50;
+  --accent: #3498db;
+  --success: #27ae60;
+  --danger: #c0392b;
+  --light: #ecf0f1;
+}
+
+body {
+  background-color: #f4f7f6;
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+}
+
+.app-container {
+  max-width: 900px;
+  margin: 20px auto;
+  background: white;
+  min-height: 80vh;
+  box-shadow: 0 0 20px rgba(0,0,0,0.05);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Header */
+.header {
+  background-color: var(--primary);
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+.header h1 span {
+  font-weight: 300;
+  color: var(--accent);
+}
+
+/* Tabs */
+.nav-tabs {
+  display: flex;
+  background: #dfe6e9;
+}
+
+.nav-tabs button {
+  flex: 1;
+  padding: 15px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #7f8c8d;
+  transition: 0.3s;
+}
+
+.nav-tabs button.active {
+  background: white;
+  color: var(--primary);
+  border-top: 3px solid var(--accent);
+}
+
+.nav-tabs button:hover:not(.active) {
+  background: #dcdde1;
+}
+
+/* Content Area */
+.content-area {
+  padding: 30px;
+}
+
+/* Forms */
+.card-form {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 30px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.card-form h2 {
+  margin-top: 0;
+  color: var(--primary);
+  border-bottom: 2px solid var(--light);
+  padding-bottom: 10px;
+}
+
+.card-form label {
+  display: block;
+  margin: 15px 0 5px;
+  font-weight: bold;
+  color: #555;
+}
+
+.card-form input, .card-form select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box; 
+}
+
+.card-form button {
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.btn-generate { background: var(--accent) !important; }
+.btn-pay { background: var(--success) !important; }
+
+/* Dashboard Controls (Search & Filter) */
+.dashboard-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  background: #f8f9fa;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.dashboard-controls input {
+  flex: 2;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.dashboard-controls select {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+th {
+  background-color: var(--light);
+  color: var(--primary);
+}
+
+tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.pagination button {
+  padding: 8px 16px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #2c3e50;
+  transition: all 0.2s;
+}
+
+.pagination button:hover:not(:disabled) {
+  background: #3498db;
+  color: white;
+  border-color: #3498db;
+}
+
+.pagination button:disabled {
+  background: #f5f5f5;
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  font-weight: bold;
+  color: #7f8c8d;
+}
+
+/* Action Buttons & Info Boxes */
+.btn-print-icon {
+  background: #f1c40f;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: #333;
+}
+.btn-print-icon:hover { background: #f39c12; }
+
+.info-box {
+  background-color: #e8f6f3;
+  border: 1px solid #d0ece7;
+  color: #16a085;
+  padding: 10px 15px;
+  border-radius: 4px;
+  margin: 15px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+/* --- MODAL STYLES --- */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  animation: slideUp 0.2s;
+}
+
+.modal-content h3 { margin-top: 0; color: #2c3e50; }
+.modal-content p { color: #555; margin: 15px 0; }
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn-secondary {
+  background-color: #95a5a6;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.btn-secondary:hover { background-color: #7f8c8d; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { transform: translateY(20px); } to { transform: translateY(0); } }
+
+/* --- PRINT STYLES --- */
+@media print {
+  .screen-only, .header, .nav-tabs, .content-area, .modal-overlay { display: none !important; }
+  #print-area { display: block !important; position: absolute; top: 0; left: 0; width: 100%; }
+  
+  @page {
+    margin: 0; 
+    size: auto;
+  }
+
+  body {
+    margin: 10cm;
+  }
+
+  .print-slip {
+    width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #000;
+    font-family: 'Courier New', Courier, monospace;
+    text-align: center;
+  }
+  .print-header h2 { margin: 0; font-size: 1.2rem; }
+  .print-header p { margin: 5px 0; font-size: 0.8rem; }
+  .print-body { text-align: left; margin-top: 20px; }
+  .print-body p { margin: 5px 0; font-size: 0.9rem; }
+  .dashed { border-top: 1px dashed #000; margin: 10px 0; }
+  .total-row { font-weight: bold; font-size: 1.1rem; display: flex; justify-content: space-between; }
+  .print-footer { margin-top: 20px; font-size: 0.7rem; color: #555; }
+}
+#print-area { display: none; }
