@@ -1,17 +1,72 @@
 import React, { useState, useEffect } from 'react';
 
-// Configuration
+// ============================================
+// DATA TYPES SECTION
+// ============================================
+// Data Types are fundamental building blocks in programming that define what kind of value a variable can hold.
+// 
+// Key Data Types Used in This Application:
+// 
+// 1. NUMBERS (Integer & Float):
+//    - Integers: Whole numbers without decimals (e.g., account ID: 101, reading: 231)
+//    - Floats: Decimal numbers (e.g., price: 0.15, balance: 44.65)
+//    - Used for: calculations, IDs, monetary values, meter readings
+//
+// 2. STRINGS (Text):
+//    - Sequence of characters enclosed in quotes (e.g., 'John Doe', 'Electricity')
+//    - Used for: names, service types, messages, dates
+//
+// 3. BOOLEANS (True/False):
+//    - Logical values: true or false
+//    - Used for: modal open/close state, form validation, conditional rendering
+//
+// 4. OBJECTS (Key-Value Pairs):
+//    - Collections of related data (e.g., {id: 101, name: 'John', balance: 44.65})
+//    - Used for: customer accounts, form data, configuration settings
+//
+// 5. ARRAYS (Lists):
+//    - Ordered collections of values (e.g., [account1, account2, account3])
+//    - Used for: storing multiple customer accounts, transaction history
+//
+// 6. NULL/UNDEFINED:
+//    - Represents absence of value
+//    - Used for: initializing empty states, indicating no data selected
+
+// Configuration Object (Data Type: OBJECT)
+// Contains nested objects with NUMBER (price, serviceCharge) and STRING (unit) values
 const RATES = {
-  Electricity: { unit: 'kWh', price: 0.15, serviceCharge: 10.00 },
-  Water: { unit: 'cu.m', price: 1.25, serviceCharge: 5.00 },
+  Electricity: { unit: 'kWh', price: 0.15, serviceCharge: 10.00 },  // Numbers: float values for pricing
+  Water: { unit: 'cu.m', price: 1.25, serviceCharge: 5.00 },        // Strings: unit of measurement
   Internet: { unit: 'GB', price: 2.00, serviceCharge: 20.00 }
 };
 
+// Constant Variable (Data Type: NUMBER - Integer)
 const ITEMS_PER_PAGE = 5;
 
-// Sub-Component: Generic Modal
+// ============================================
+// BASIC CONSTRUCT: React Component Structure
+// ============================================
+// This application uses React (JavaScript library) with JSX syntax
+// 
+// Program Structure Hierarchy:
+// 1. IMPORTS: External libraries and dependencies
+// 2. CONSTANTS: Fixed configuration values
+// 3. COMPONENTS: Reusable UI building blocks (Functions that return JSX)
+// 4. STATE MANAGEMENT: Dynamic data that changes over time
+// 5. FUNCTIONS/HANDLERS: Business logic and event handling
+// 6. RENDER/RETURN: JSX markup that displays the UI
+//
+// React Component = Function + State + JSX
+// JSX = JavaScript XML (HTML-like syntax in JavaScript)
+
+// Sub-Component: Generic Modal (Data Type: FUNCTION returning JSX)
+// Parameters use OBJECT destructuring: {isOpen, title, children, onClose, actions}
+// isOpen is a BOOLEAN, title is a STRING, children is JSX, onClose is a FUNCTION
 const Modal = ({ isOpen, title, children, onClose, actions }) => {
+  // CONTROL STRUCTURE: Early return (if statement)
+  // If modal is not open (boolean false), don't render anything
   if (!isOpen) return null;
+  
   return (
     <div className="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm flex justify-center items-center z-[1000] animate-[fadeIn_0.2s]">
       <div className="bg-white p-10 rounded-2xl w-[90%] max-w-md text-center shadow-2xl border border-gray-100 animate-[slideUp_0.2s]">
@@ -26,101 +81,147 @@ const Modal = ({ isOpen, title, children, onClose, actions }) => {
   );
 };
 
-// Initial Mock Data
+// ============================================
+// INTRODUCTION: Initial Mock Data
+// ============================================
+// Array of Objects: Each object represents a customer account
+// Data Types: NUMBER (id, balance, lastReading), STRING (name, type), ARRAY (history)
 const INITIAL_ACCOUNTS = [
   { id: 101, name: 'John Doe', type: 'Electricity', balance: 44.65, lastReading: 231, history: [] },
   { id: 102, name: 'Jane Smith', type: 'Water', balance: 45.50, lastReading: 120, history: [] },
 ];
 
+// ============================================
+// MAIN APPLICATION COMPONENT
+// ============================================
 function App() {
+  // ============================================
+  // STATE MANAGEMENT (React Hooks)
+  // ============================================
+  // useState creates reactive variables that trigger re-renders when changed
+  // Syntax: const [value, setValue] = useState(initialValue)
+  
+  // ARRAY State: Stores all customer accounts
   const [accounts, setAccounts] = useState(INITIAL_ACCOUNTS);
+  
+  // STRING State: Tracks which tab is currently active
   const [activeTab, setActiveTab] = useState('dashboard');
   
-  // Dashboard State
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterType, setFilterType] = useState('All');
-  const [currentPage, setCurrentPage] = useState(1);
+  // Dashboard State (Multiple data types)
+  const [searchTerm, setSearchTerm] = useState('');           // STRING: User search input
+  const [filterType, setFilterType] = useState('All');        // STRING: Service filter selection
+  const [currentPage, setCurrentPage] = useState(1);          // NUMBER (Integer): Pagination
 
-  // Forms State
+  // Forms State (OBJECTS: Store form field values)
   const [regForm, setRegForm] = useState({ name: '', type: 'Electricity' });
   const [readingForm, setReadingForm] = useState({ accountId: '', currentReading: '' });
   const [payForm, setPayForm] = useState({ accountId: '', amount: '' });
 
   // Print & Modal State
-  const [printData, setPrintData] = useState(null);
-  const [modalState, setModalState] = useState({ type: null, data: null });
+  const [printData, setPrintData] = useState(null);                        // NULL or OBJECT
+  const [modalState, setModalState] = useState({ type: null, data: null }); // OBJECT with nullable properties
 
-  // Helper: Close Modal
+  // ============================================
+  // CONTROL STRUCTURES: Helper Functions
+  // ============================================
+  
+  // Helper: Close Modal (Updates state to hide modal)
   const closeModal = () => setModalState({ type: null, data: null });
 
-  // Helper: Trigger Print
+  // Helper: Trigger Print (Sets print data and calls browser print after delay)
   const triggerPrint = (data) => {
     setPrintData(data);
-    setTimeout(() => { window.print(); }, 100);
+    setTimeout(() => { window.print(); }, 100);  // Async operation with 100ms delay
   };
 
+  // ============================================
+  // CONTROL STRUCTURES: Event Handler Functions
+  // ============================================
+  
   // Handler: Registration (Auto-Increment ID)
+  // Demonstrates: CONDITIONAL (if-else), ARRAY methods, OBJECT creation
   const registerCustomer = (e) => {
-    e.preventDefault();
-    // Logic: Find highest ID and add 1
+    e.preventDefault();  // Prevent form default submission behavior
+    
+    // CONTROL STRUCTURE: Ternary Operator (shorthand if-else)
+    // Syntax: condition ? valueIfTrue : valueIfFalse
+    // Logic: Find highest ID and add 1, or use 101 if no accounts exist
     const nextId = accounts.length > 0 ? Math.max(...accounts.map(acc => acc.id)) + 1 : 101;
 
+    // Create new account OBJECT with multiple data types
     const newAccount = {
-      id: nextId,
-      name: regForm.name,
-      type: regForm.type,
-      balance: 0.00,
-      lastReading: 0,
-      history: []
+      id: nextId,              // NUMBER (Integer)
+      name: regForm.name,      // STRING
+      type: regForm.type,      // STRING
+      balance: 0.00,           // NUMBER (Float)
+      lastReading: 0,          // NUMBER (Integer)
+      history: []              // ARRAY (empty initially)
     };
+    
+    // Update state: Add new account to ARRAY using spread operator
     setAccounts([...accounts, newAccount]);
+    
+    // Reset form to initial values (OBJECT)
     setRegForm({ name: '', type: 'Electricity' });
     
+    // Show success modal with account data (OBJECT)
     setModalState({ 
       type: 'REGISTER_SUCCESS', 
       data: { id: newAccount.id, name: newAccount.name } 
     });
   };
 
-  // Handler: Generate Bill
+  // ============================================
+  // CONTROL STRUCTURES: Bill Generation Handler
+  // ============================================
+  // Demonstrates: IF-ELSE decisions, mathematical operations, ARRAY manipulation
   const generateBill = (e) => {
     e.preventDefault();
-    const accId = parseInt(readingForm.accountId);
-    const reading = parseFloat(readingForm.currentReading);
     
+    // Parse form values to appropriate data types
+    const accId = parseInt(readingForm.accountId);          // STRING to NUMBER (Integer)
+    const reading = parseFloat(readingForm.currentReading); // STRING to NUMBER (Float)
+    
+    // Find account index in ARRAY (-1 if not found)
     const accountIndex = accounts.findIndex(a => a.id === accId);
-    if (accountIndex === -1) return;
-    const account = accounts[accountIndex];
     
-    // Validation
+    // CONTROL STRUCTURE: Early return if account not found
+    if (accountIndex === -1) return;
+    
+    const account = accounts[accountIndex];  // Get account OBJECT from ARRAY
+    
+    // CONTROL STRUCTURE: IF statement for validation
+    // Decision: Check if new reading is valid (not less than previous)
     if (reading < account.lastReading) {
       setModalState({ type: 'ERROR', data: { msg: "New reading cannot be lower than previous." }});
-      return;
+      return;  // Exit function early
     }
 
-    // Calculation
-    const usage = reading - account.lastReading;
-    const rateInfo = RATES[account.type];
-    const usageCost = usage * rateInfo.price;
-    const totalBill = usageCost + rateInfo.serviceCharge;
+    // Calculation Logic (NUMBER arithmetic operations)
+    const usage = reading - account.lastReading;        // Subtraction
+    const rateInfo = RATES[account.type];               // Access OBJECT property
+    const usageCost = usage * rateInfo.price;           // Multiplication
+    const totalBill = usageCost + rateInfo.serviceCharge; // Addition
 
+    // Create history entry OBJECT
     const newHistoryItem = {
-      date: new Date().toLocaleDateString(),
-      type: 'BILL',
-      desc: `Usage: ${usage} ${rateInfo.unit}`,
-      amount: totalBill
+      date: new Date().toLocaleDateString(),  // STRING (formatted date)
+      type: 'BILL',                           // STRING (transaction type)
+      desc: `Usage: ${usage} ${rateInfo.unit}`, // STRING (template literal)
+      amount: totalBill                       // NUMBER (Float)
     };
 
-    const updatedAccounts = [...accounts];
+    // ARRAY manipulation: Create copy, update specific item
+    const updatedAccounts = [...accounts];  // Spread operator creates shallow copy
     updatedAccounts[accountIndex] = {
-      ...account,
-      lastReading: reading,
-      balance: account.balance + totalBill,
-      history: [newHistoryItem, ...account.history]
+      ...account,                           // Copy existing properties
+      lastReading: reading,                 // Update reading
+      balance: account.balance + totalBill, // Calculate new balance
+      history: [newHistoryItem, ...account.history] // Add to history ARRAY
     };
 
     setAccounts(updatedAccounts);
-    setReadingForm({ accountId: '', currentReading: '' });
+    setReadingForm({ accountId: '', currentReading: '' }); // Reset form
 
     setModalState({
       type: 'BILL_SUCCESS',
@@ -189,14 +290,43 @@ function App() {
     });
   };
 
-  // Dashboard Logic (Filter & Search)
+  // ============================================
+  // CONTROL STRUCTURES: Dashboard Logic
+  // ============================================
+  // Demonstrates: ARRAY filtering (multiple conditions), mathematical calculations, slicing
+  
+  // Filter by service type (ARRAY method with ternary operator)
   let processedData = accounts.filter(acc => filterType === 'All' ? true : acc.type === filterType);
-  processedData = processedData.filter(acc => acc.name.toLowerCase().includes(searchTerm.toLowerCase()) || acc.id.toString().includes(searchTerm));
-  const totalPages = Math.ceil(processedData.length / ITEMS_PER_PAGE);
-  const currentData = processedData.slice((currentPage - 1) * ITEMS_PER_PAGE, (currentPage - 1) * ITEMS_PER_PAGE + ITEMS_PER_PAGE);
+  
+  // Filter by search term (ARRAY method with OR logic)
+  // Searches in both name (STRING) and ID (NUMBER converted to STRING)
+  processedData = processedData.filter(acc => 
+    acc.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    acc.id.toString().includes(searchTerm)
+  );
+  
+  // Pagination calculations (NUMBER arithmetic)
+  const totalPages = Math.ceil(processedData.length / ITEMS_PER_PAGE);  // Round up division
+  
+  // ARRAY slicing: Extract subset of data for current page
+  const currentData = processedData.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,                    // Start index
+    (currentPage - 1) * ITEMS_PER_PAGE + ITEMS_PER_PAGE    // End index
+  );
 
-  useEffect(() => { setCurrentPage(1); }, [searchTerm, filterType]);
+  // ============================================
+  // CONTROL STRUCTURES: Side Effects (useEffect Hook)
+  // ============================================
+  // Runs code when dependencies change (searchTerm or filterType)
+  // Resets pagination to page 1 when user filters or searches
+  useEffect(() => { 
+    setCurrentPage(1); 
+  }, [searchTerm, filterType]);  // Dependency ARRAY
 
+  // ============================================
+  // RENDER: JSX Return Statement
+  // ============================================
+  // JSX combines HTML-like markup with JavaScript expressions
   return (
     <div className="max-w-[1000px] my-8 mx-auto bg-white min-h-[85vh] shadow-2xl rounded-2xl overflow-hidden border border-gray-100">
       <style>{`
@@ -315,6 +445,8 @@ function App() {
         </nav>
 
         <div className="p-8">
+          {/* CONTROL STRUCTURE: Conditional Rendering (&&) */}
+          {/* Shows dashboard content ONLY when activeTab === 'dashboard' (BOOLEAN comparison) */}
           {activeTab === 'dashboard' && (
             <div>
               <h2 className="text-primary text-2xl font-bold mb-6 pb-3 border-b-2 border-gray-200"><img src="/images/account-list.png" alt="accounts" style={{height: '28px', marginRight: '8px'}} />Account Masterlist</h2>
@@ -340,14 +472,21 @@ function App() {
                   </tr>
                 </thead>
                 <tbody className="bg-white">
+                  {/* CONTROL STRUCTURE: LOOPING with .map() */}
+                  {/* Iterates through ARRAY and creates table row for each account */}
+                  {/* Similar to FOR loop: for each account in currentData, render <tr> */}
                   {currentData.map(acc => (
                     <tr key={acc.id} className="hover:bg-gradient-to-r hover:from-blue-50 hover:to-transparent transition-all duration-200 border-b border-gray-100">
                       <td className="p-4 text-left font-semibold text-gray-700">{acc.id}</td>
                       <td className="p-4 text-left font-medium text-gray-800">{acc.name}</td>
                       <td className="p-4 text-left"><span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-semibold">{acc.type}</span></td>
+                      
+                      {/* CONTROL STRUCTURE: Inline conditional (ternary) for dynamic styling */}
+                      {/* If balance > 0 (debt), show red; else (credit/paid), show green */}
                       <td className="p-4 text-left font-bold text-lg" style={{ color: acc.balance > 0 ? '#e74c3c' : '#27ae60' }}>
                         ${acc.balance?.toFixed(2)}
                       </td>
+                      
                       <td className="p-4 text-left"><strong className="text-gray-800">{acc.lastReading}</strong> <small className="text-gray-500">{RATES[acc.type].unit}</small></td>
                       <td className="p-4 text-left">
                         <button className="bg-gradient-to-r from-yellow-400 to-yellow-500 border-none py-2 px-4 rounded-lg cursor-pointer text-xs text-gray-800 hover:from-yellow-500 hover:to-yellow-600 transition-all duration-200 font-semibold shadow-md hover:shadow-lg flex items-center gap-2" onClick={() => printStatement(acc)}><img src="/images/print.png" alt="print" style={{height: '16px'}} />Print</button>
@@ -356,6 +495,9 @@ function App() {
                   ))}
                 </tbody>
               </table>
+              
+              {/* CONTROL STRUCTURE: Conditional rendering with && */}
+              {/* Shows pagination ONLY when there are multiple pages (BOOLEAN: totalPages > 1) */}
               {totalPages > 1 && (
                 <div className="flex justify-center items-center gap-4 mt-6 pt-6 border-t-2 border-gray-200">
                   <button disabled={currentPage === 1} onClick={() => setCurrentPage(prev => prev - 1)} className="py-3 px-6 bg-white border-2 border-gray-300 rounded-lg cursor-pointer text-primary font-semibold transition-all duration-200 hover:bg-[#3498db] hover:text-white hover:border-[#3498db] disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed disabled:border-gray-200 shadow-md hover:shadow-lg">&laquo; Prev</button>
@@ -366,6 +508,9 @@ function App() {
             </div>
           )}
 
+          {/* CONTROL STRUCTURE: Multiple conditional sections (similar to SWITCH statement) */}
+          {/* Each tab shows different content based on activeTab STRING value */}
+          
           {activeTab === 'register' && (
              <form className="max-w-[550px] mx-auto p-10 border-2 border-gray-200 rounded-2xl bg-gradient-to-br from-white to-gray-50 shadow-xl" onSubmit={registerCustomer}>
               <h2 className="mt-0 text-primary text-2xl font-bold border-b-2 border-b-blue-200 pb-4 mb-6"><img src="/images/register-form.png" alt="register" style={{height: '28px', marginRight: '8px'}} />Customer Registration</h2>
@@ -384,12 +529,23 @@ function App() {
               <label className="block mt-6 mb-2 font-bold text-gray-700 text-sm">Select Account</label>
               <select required value={readingForm.accountId} onChange={e => setReadingForm({...readingForm, accountId: e.target.value})} className="w-full p-4 border-2 border-gray-300 rounded-lg box-border focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 font-medium bg-white transition-all cursor-pointer">
                 <option value="">-- Select Customer --</option>
+                
+                {/* CONTROL STRUCTURE: LOOPING - Generate dropdown options from ARRAY */}
+                {/* .map() iterates through accounts ARRAY and creates <option> for each */}
                 {accounts.map(acc => <option key={acc.id} value={acc.id}>{acc.name} ({acc.type})</option>)}
               </select>
+              
+              {/* CONTROL STRUCTURE: Conditional rendering with && */}
+              {/* Shows previous reading ONLY when account is selected (readingForm.accountId is truthy) */}
               {readingForm.accountId && (
                  <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-200 text-emerald-700 py-4 px-5 rounded-xl my-6 flex justify-between items-center text-sm font-medium shadow-sm">
+                   {/* IIFE (Immediately Invoked Function Expression) for complex logic in JSX */}
                    {(() => {
+                     // Find selected account from ARRAY
                      const selectedAcc = accounts.find(a => a.id.toString() === readingForm.accountId.toString());
+                     
+                     // CONTROL STRUCTURE: Ternary operator for conditional rendering
+                     // If account found, show reading; else show nothing (null)
                      return selectedAcc ? <><span>Previous Reading:</span><strong>{selectedAcc.lastReading} {RATES[selectedAcc.type].unit}</strong></> : null;
                    })()}
                  </div>
@@ -405,6 +561,10 @@ function App() {
               <label className="block mt-6 mb-2 font-bold text-gray-700 text-sm">Select Account</label>
               <select required value={payForm.accountId} onChange={e => setPayForm({...payForm, accountId: e.target.value})} className="w-full p-4 border-2 border-gray-300 rounded-lg box-border focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 font-medium bg-white transition-all cursor-pointer">
                 <option value="">-- Select Customer --</option>
+                
+                {/* CONTROL STRUCTURE: Chained ARRAY methods (filter + map) */}
+                {/* 1. .filter() - Only show accounts with balance > 0 (have outstanding bills) */}
+                {/* 2. .map() - Create dropdown option for each filtered account */}
                 {accounts.filter(a => a.balance > 0).map(acc => <option key={acc.id} value={acc.id}>{acc.name} (Due: ${acc.balance?.toFixed(2)})</option>)}
               </select>
               <label className="block mt-6 mb-2 font-bold text-gray-700 text-sm">Payment Amount ($)</label><input required type="number" step="0.01" value={payForm.amount} onChange={e => setPayForm({...payForm, amount: e.target.value})} className="w-full p-4 border-2 border-gray-300 rounded-lg box-border focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-all font-medium" placeholder="Enter payment amount" />
