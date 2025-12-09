@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import './App.css';
 
 // Configuration
 const RATES = {
@@ -14,13 +13,13 @@ const ITEMS_PER_PAGE = 5;
 const Modal = ({ isOpen, title, children, onClose, actions }) => {
   if (!isOpen) return null;
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <h3>{title}</h3>
-        <div className="modal-body">{children}</div>
-        <div className="modal-actions">
+    <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-[1000] animate-[fadeIn_0.2s]">
+      <div className="bg-white p-8 rounded-lg w-[90%] max-w-md text-center shadow-[0_4px_15px_rgba(0,0,0,0.2)] animate-[slideUp_0.2s]">
+        <h3 className="mt-0 text-primary">{title}</h3>
+        <div className="text-[#555] my-4">{children}</div>
+        <div className="flex justify-center gap-2.5 mt-5">
           {actions}
-          <button className="btn-secondary" onClick={onClose}>Close</button>
+          <button className="bg-[#95a5a6] text-white border-none py-2.5 px-5 rounded cursor-pointer hover:bg-[#7f8c8d]" onClick={onClose}>Close</button>
         </div>
       </div>
     </div>
@@ -199,7 +198,26 @@ function App() {
   useEffect(() => { setCurrentPage(1); }, [searchTerm, filterType]);
 
   return (
-    <div className="app-container">
+    <div className="max-w-[900px] my-5 mx-auto bg-white min-h-[80vh] shadow-[0_0_20px_rgba(0,0,0,0.05)] rounded-lg overflow-hidden">
+      <style>{`
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(20px); } to { transform: translateY(0); } }
+        @media print {
+          .screen-only { display: none !important; }
+          #print-area { display: block !important; position: absolute; top: 0; left: 0; width: 100%; }
+          body { margin: 10cm; }
+          .print-slip { width: 300px; margin: 0 auto; padding: 20px; border: 1px solid #000; font-family: 'Courier New', Courier, monospace; text-align: center; }
+          .print-header h2 { margin: 0; font-size: 1.2rem; }
+          .print-header p { margin: 5px 0; font-size: 0.8rem; }
+          .print-body { text-align: left; margin-top: 20px; }
+          .print-body p { margin: 5px 0; font-size: 0.9rem; }
+          .dashed { border-top: 1px dashed #000; margin: 10px 0; }
+          .total-row { font-weight: bold; font-size: 1.1rem; display: flex; justify-content: space-between; }
+          .print-footer { margin-top: 20px; font-size: 0.7rem; color: #555; }
+        }
+        #print-area { display: none; }
+      `}</style>
+      
       {/* HIDDEN PRINT AREA */}
       <div id="print-area">
         {printData && (
@@ -241,7 +259,7 @@ function App() {
       {/* MODALS */}
       <Modal isOpen={modalState.type === 'REGISTER_SUCCESS'} title="🎉 Registration Successful" onClose={closeModal}>
         <p>Customer account created.</p>
-        <div style={{fontSize: '1.2rem', margin: '20px 0', color: '#27ae60'}}>
+        <div className="text-xl my-5 text-success">
           <strong>Account ID: {modalState.data?.id}</strong>
         </div>
       </Modal>
@@ -251,7 +269,7 @@ function App() {
         title="Bill Generated" 
         onClose={closeModal}
         actions={
-          <button className="btn-print-icon" onClick={() => { printStatement(modalState.data?.account); closeModal(); }}>
+          <button className="bg-[#f1c40f] border-none py-1.5 px-2.5 rounded cursor-pointer text-xs text-[#333] hover:bg-[#f39c12]" onClick={() => { printStatement(modalState.data?.account); closeModal(); }}>
             🖨️ Print Bill
           </button>
         }
@@ -266,7 +284,7 @@ function App() {
         title="Payment Processed" 
         onClose={closeModal}
         actions={
-          <button className="btn-print-icon" onClick={() => { triggerPrint(modalState.data?.receiptData); closeModal(); }}>
+          <button className="bg-[#f1c40f] border-none py-1.5 px-2.5 rounded cursor-pointer text-xs text-[#333] hover:bg-[#f39c12]" onClick={() => { triggerPrint(modalState.data?.receiptData); closeModal(); }}>
             🖨️ Print Receipt
           </button>
         }
@@ -277,29 +295,29 @@ function App() {
       </Modal>
 
       <Modal isOpen={modalState.type === 'ERROR'} title="⚠️ Action Failed" onClose={closeModal}>
-        <p style={{color: '#c0392b'}}>{modalState.data?.msg}</p>
+        <p className="text-danger">{modalState.data?.msg}</p>
       </Modal>
 
       {/* MAIN UI */}
       <div className="screen-only">
-        <header className="header">
-          <h1>BillEase <span>Utility System</span></h1>
+        <header className="bg-primary text-white p-5 text-center">
+          <h1 className="m-0">BillEase <span className="font-light text-accent">Utility System</span></h1>
         </header>
 
-        <nav className="nav-tabs">
-          <button className={activeTab === 'dashboard' ? 'active' : ''} onClick={() => setActiveTab('dashboard')}>Dashboard</button>
-          <button className={activeTab === 'register' ? 'active' : ''} onClick={() => setActiveTab('register')}>1. Register</button>
-          <button className={activeTab === 'reading' ? 'active' : ''} onClick={() => setActiveTab('reading')}>2. Meter Reading</button>
-          <button className={activeTab === 'payment' ? 'active' : ''} onClick={() => setActiveTab('payment')}>3. Pay Bill</button>
+        <nav className="flex bg-[#dfe6e9]">
+          <button className={`flex-1 p-4 border-none bg-transparent cursor-pointer text-base font-semibold transition-all duration-300 ${activeTab === 'dashboard' ? 'bg-white text-primary border-t-[3px] border-t-accent' : 'text-[#7f8c8d] hover:bg-[#dcdde1]'}`} onClick={() => setActiveTab('dashboard')}>Dashboard</button>
+          <button className={`flex-1 p-4 border-none bg-transparent cursor-pointer text-base font-semibold transition-all duration-300 ${activeTab === 'register' ? 'bg-white text-primary border-t-[3px] border-t-accent' : 'text-[#7f8c8d] hover:bg-[#dcdde1]'}`} onClick={() => setActiveTab('register')}>1. Register</button>
+          <button className={`flex-1 p-4 border-none bg-transparent cursor-pointer text-base font-semibold transition-all duration-300 ${activeTab === 'reading' ? 'bg-white text-primary border-t-[3px] border-t-accent' : 'text-[#7f8c8d] hover:bg-[#dcdde1]'}`} onClick={() => setActiveTab('reading')}>2. Meter Reading</button>
+          <button className={`flex-1 p-4 border-none bg-transparent cursor-pointer text-base font-semibold transition-all duration-300 ${activeTab === 'payment' ? 'bg-white text-primary border-t-[3px] border-t-accent' : 'text-[#7f8c8d] hover:bg-[#dcdde1]'}`} onClick={() => setActiveTab('payment')}>3. Pay Bill</button>
         </nav>
 
-        <div className="content-area">
+        <div className="p-8">
           {activeTab === 'dashboard' && (
-            <div className="dashboard-view">
-              <h2>Account Masterlist</h2>
-              <div className="dashboard-controls">
-                <input type="text" placeholder="Search..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-                <select value={filterType} onChange={(e) => setFilterType(e.target.value)}>
+            <div>
+              <h2 className="text-primary">Account Masterlist</h2>
+              <div className="flex gap-2.5 mb-4 bg-[#f8f9fa] p-2.5 rounded">
+                <input type="text" placeholder="Search..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="flex-[2] py-2 px-3 border border-[#ddd] rounded" />
+                <select value={filterType} onChange={(e) => setFilterType(e.target.value)} className="flex-1 py-2 px-3 border border-[#ddd] rounded cursor-pointer">
                   <option value="All">All Services</option>
                   <option value="Electricity">Electricity</option>
                   <option value="Water">Water</option>
@@ -307,87 +325,87 @@ function App() {
                 </select>
               </div>
 
-              <table>
+              <table className="w-full border-collapse mt-2.5">
                 <thead>
                   <tr>
-                    <th>Acct ID</th>
-                    <th>Customer</th>
-                    <th>Type</th>
-                    <th>Balance</th>
-                    <th>Last Reading</th>
-                    <th>Action</th>
+                    <th className="p-3 text-left border-b border-[#eee] bg-light text-primary">Acct ID</th>
+                    <th className="p-3 text-left border-b border-[#eee] bg-light text-primary">Customer</th>
+                    <th className="p-3 text-left border-b border-[#eee] bg-light text-primary">Type</th>
+                    <th className="p-3 text-left border-b border-[#eee] bg-light text-primary">Balance</th>
+                    <th className="p-3 text-left border-b border-[#eee] bg-light text-primary">Last Reading</th>
+                    <th className="p-3 text-left border-b border-[#eee] bg-light text-primary">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {currentData.map(acc => (
-                    <tr key={acc.id}>
-                      <td>{acc.id}</td>
-                      <td>{acc.name}</td>
-                      <td>{acc.type}</td>
-                      <td style={{ color: acc.balance > 0 ? 'red' : 'green', fontWeight: 'bold' }}>
+                    <tr key={acc.id} className="hover:bg-[#f9f9f9]">
+                      <td className="p-3 text-left border-b border-[#eee]">{acc.id}</td>
+                      <td className="p-3 text-left border-b border-[#eee]">{acc.name}</td>
+                      <td className="p-3 text-left border-b border-[#eee]">{acc.type}</td>
+                      <td className="p-3 text-left border-b border-[#eee] font-bold" style={{ color: acc.balance > 0 ? 'red' : 'green' }}>
                         ${acc.balance?.toFixed(2)}
                       </td>
-                      <td><strong>{acc.lastReading}</strong> <small>{RATES[acc.type].unit}</small></td>
-                      <td>
-                        <button className="btn-print-icon" onClick={() => printStatement(acc)}>🖨️ Print</button>
+                      <td className="p-3 text-left border-b border-[#eee]"><strong>{acc.lastReading}</strong> <small>{RATES[acc.type].unit}</small></td>
+                      <td className="p-3 text-left border-b border-[#eee]">
+                        <button className="bg-[#f1c40f] border-none py-1.5 px-2.5 rounded cursor-pointer text-xs text-[#333] hover:bg-[#f39c12]" onClick={() => printStatement(acc)}>🖨️ Print</button>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
               {totalPages > 1 && (
-                <div className="pagination">
-                  <button disabled={currentPage === 1} onClick={() => setCurrentPage(prev => prev - 1)}>&laquo; Prev</button>
-                  <span>Page {currentPage} of {totalPages}</span>
-                  <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(prev => prev + 1)}>Next &raquo;</button>
+                <div className="flex justify-center items-center gap-4 mt-5 pt-4 border-t border-[#eee]">
+                  <button disabled={currentPage === 1} onClick={() => setCurrentPage(prev => prev - 1)} className="py-2 px-4 bg-white border border-[#ddd] rounded cursor-pointer text-primary transition-all duration-200 hover:bg-accent hover:text-white hover:border-accent disabled:bg-[#f5f5f5] disabled:text-[#ccc] disabled:cursor-not-allowed">&laquo; Prev</button>
+                  <span className="font-bold text-[#7f8c8d]">Page {currentPage} of {totalPages}</span>
+                  <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(prev => prev + 1)} className="py-2 px-4 bg-white border border-[#ddd] rounded cursor-pointer text-primary transition-all duration-200 hover:bg-accent hover:text-white hover:border-accent disabled:bg-[#f5f5f5] disabled:text-[#ccc] disabled:cursor-not-allowed">Next &raquo;</button>
                 </div>
               )}
             </div>
           )}
 
           {activeTab === 'register' && (
-             <form className="card-form" onSubmit={registerCustomer}>
-              <h2>Customer Registration</h2>
-              <label>Customer Name</label><input required value={regForm.name} onChange={e => setRegForm({...regForm, name: e.target.value})} />
-              <label>Service Type</label>
-              <select value={regForm.type} onChange={e => setRegForm({...regForm, type: e.target.value})}>
+             <form className="max-w-[500px] mx-auto p-8 border border-[#ddd] rounded-lg bg-white" onSubmit={registerCustomer}>
+              <h2 className="mt-0 text-primary border-b-2 border-b-light pb-2.5">Customer Registration</h2>
+              <label className="block my-4 mb-1.5 font-bold text-[#555]">Customer Name</label><input required value={regForm.name} onChange={e => setRegForm({...regForm, name: e.target.value})} className="w-full p-2.5 border border-[#ccc] rounded box-border" />
+              <label className="block my-4 mb-1.5 font-bold text-[#555]">Service Type</label>
+              <select value={regForm.type} onChange={e => setRegForm({...regForm, type: e.target.value})} className="w-full p-2.5 border border-[#ccc] rounded box-border">
                 <option value="Electricity">Electricity</option><option value="Water">Water</option><option value="Internet">Internet</option>
               </select>
-              <button type="submit">Create Account</button>
+              <button type="submit" className="w-full mt-5 p-3 bg-primary text-white border-none rounded cursor-pointer text-base">Create Account</button>
             </form>
           )}
 
           {activeTab === 'reading' && (
-             <form className="card-form" onSubmit={generateBill}>
-              <h2>Input Usage</h2>
-              <label>Select Account</label>
-              <select required value={readingForm.accountId} onChange={e => setReadingForm({...readingForm, accountId: e.target.value})}>
+             <form className="max-w-[500px] mx-auto p-8 border border-[#ddd] rounded-lg bg-white" onSubmit={generateBill}>
+              <h2 className="mt-0 text-primary border-b-2 border-b-light pb-2.5">Input Usage</h2>
+              <label className="block my-4 mb-1.5 font-bold text-[#555]">Select Account</label>
+              <select required value={readingForm.accountId} onChange={e => setReadingForm({...readingForm, accountId: e.target.value})} className="w-full p-2.5 border border-[#ccc] rounded box-border">
                 <option value="">-- Select Customer --</option>
                 {accounts.map(acc => <option key={acc.id} value={acc.id}>{acc.name} ({acc.type})</option>)}
               </select>
               {readingForm.accountId && (
-                 <div className="info-box">
+                 <div className="bg-[#e8f6f3] border border-[#d0ece7] text-[#16a085] py-2.5 px-4 rounded my-4 flex justify-between items-center text-sm">
                    {(() => {
                      const selectedAcc = accounts.find(a => a.id.toString() === readingForm.accountId.toString());
                      return selectedAcc ? <><span>Previous Reading:</span><strong>{selectedAcc.lastReading} {RATES[selectedAcc.type].unit}</strong></> : null;
                    })()}
                  </div>
               )}
-              <label>New Meter Reading</label><input required type="number" value={readingForm.currentReading} onChange={e => setReadingForm({...readingForm, currentReading: e.target.value})} />
-              <button type="submit" className="btn-generate">Generate Bill</button>
+              <label className="block my-4 mb-1.5 font-bold text-[#555]">New Meter Reading</label><input required type="number" value={readingForm.currentReading} onChange={e => setReadingForm({...readingForm, currentReading: e.target.value})} className="w-full p-2.5 border border-[#ccc] rounded box-border" />
+              <button type="submit" className="w-full mt-5 p-3 bg-accent text-white border-none rounded cursor-pointer text-base">Generate Bill</button>
             </form>
           )}
 
           {activeTab === 'payment' && (
-             <form className="card-form" onSubmit={processPayment}>
-              <h2>Payment Processing</h2>
-              <label>Select Account</label>
-              <select required value={payForm.accountId} onChange={e => setPayForm({...payForm, accountId: e.target.value})}>
+             <form className="max-w-[500px] mx-auto p-8 border border-[#ddd] rounded-lg bg-white" onSubmit={processPayment}>
+              <h2 className="mt-0 text-primary border-b-2 border-b-light pb-2.5">Payment Processing</h2>
+              <label className="block my-4 mb-1.5 font-bold text-[#555]">Select Account</label>
+              <select required value={payForm.accountId} onChange={e => setPayForm({...payForm, accountId: e.target.value})} className="w-full p-2.5 border border-[#ccc] rounded box-border">
                 <option value="">-- Select Customer --</option>
                 {accounts.filter(a => a.balance > 0).map(acc => <option key={acc.id} value={acc.id}>{acc.name} (Due: ${acc.balance?.toFixed(2)})</option>)}
               </select>
-              <label>Payment Amount ($)</label><input required type="number" value={payForm.amount} onChange={e => setPayForm({...payForm, amount: e.target.value})} />
-              <button type="submit" className="btn-pay">Process Payment</button>
+              <label className="block my-4 mb-1.5 font-bold text-[#555]">Payment Amount ($)</label><input required type="number" value={payForm.amount} onChange={e => setPayForm({...payForm, amount: e.target.value})} className="w-full p-2.5 border border-[#ccc] rounded box-border" />
+              <button type="submit" className="w-full mt-5 p-3 bg-success text-white border-none rounded cursor-pointer text-base">Process Payment</button>
             </form>
           )}
         </div>
