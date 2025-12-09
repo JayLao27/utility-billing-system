@@ -400,7 +400,7 @@ function App() {
         onClose={closeModal}
         actions={
           <button className="bg-gradient-to-r from-yellow-400 to-yellow-500 border-none py-3 px-6 rounded-lg cursor-pointer text-sm text-gray-800 hover:from-yellow-500 hover:to-yellow-600 transition-all duration-200 font-bold shadow-md hover:shadow-lg flex items-center gap-2" onClick={() => { printStatement(modalState.data?.account); closeModal(); }}>
-            <img src="/images/print-modal.png" alt="print" style={{height: '16px'}} />
+            <img src="/images/print-modal.png" alt="print" style={{height: '22px'}} />
             Print Bill
           </button>
         }
@@ -433,15 +433,19 @@ function App() {
       {/* MAIN UI */}
       <div className="screen-only">
         <header className="bg-gradient-to-r from-[#2c3e50] to-[#34495e] text-white p-8 text-center shadow-lg">
-          <h1 className="m-0 text-3xl font-bold tracking-wide">BillEase <img src="/images/Header.png" alt="logo" style={{height: '100px', display: 'inline', marginRight: '8px'}} /> <span className="font-normal text-[#3498db]">Utility System</span></h1>
+          <div className="flex items-center justify-center gap-4">
+            <h1 className="m-0 text-3xl font-bold tracking-wide">BillEase</h1>
+            <img src="/images/Header.png" alt="logo" style={{height: '60px'}} />
+            <h1 className="m-0 text-3xl font-bold tracking-wide"><span className="font-normal text-[#3498db]">Utility System</span></h1>
+          </div>
           <p className="text-sm text-gray-300 mt-2">Modern Billing Management</p>
         </header>
 
         <nav className="flex bg-gradient-to-r from-gray-100 to-gray-200 shadow-inner">
-          <button className={`flex-1 p-5 border-none bg-transparent cursor-pointer text-sm font-bold transition-all duration-300 flex items-center justify-between ${activeTab === 'dashboard' ? 'bg-white text-primary shadow-lg border-t-4 border-t-[#3498db] -mt-1' : 'text-gray-600 hover:bg-white hover:text-primary'}`} onClick={() => setActiveTab('dashboard')}><img src="/images/dashboard.png" alt="dashboard" style={{height: '20px'}} /><span>Dashboard</span></button>
-          <button className={`flex-1 p-5 border-none bg-transparent cursor-pointer text-sm font-bold transition-all duration-300 ${activeTab === 'register' ? 'bg-white text-primary shadow-lg border-t-4 border-t-[#3498db] -mt-1' : 'text-gray-600 hover:bg-white hover:text-primary'}`} onClick={() => setActiveTab('register')}><img src="/images/register.png" alt="register" style={{height: '20px', marginRight: '8px'}} />Register</button>
-          <button className={`flex-1 p-5 border-none bg-transparent cursor-pointer text-sm font-bold transition-all duration-300 ${activeTab === 'reading' ? 'bg-white text-primary shadow-lg border-t-4 border-t-[#3498db] -mt-1' : 'text-gray-600 hover:bg-white hover:text-primary'}`} onClick={() => setActiveTab('reading')}><img src="/images/meter.png" alt="meter" style={{height: '20px', marginRight: '8px'}} />Meter Reading</button>
-          <button className={`flex-1 p-5 border-none bg-transparent cursor-pointer text-sm font-bold transition-all duration-300 ${activeTab === 'payment' ? 'bg-white text-primary shadow-lg border-t-4 border-t-[#3498db] -mt-1' : 'text-gray-600 hover:bg-white hover:text-primary'}`} onClick={() => setActiveTab('payment')}><img src="/images/payment.png" alt="payment" style={{height: '20px', marginRight: '8px'}} />Pay Bill</button>
+          <button className={`flex-1 p-5 border-none bg-transparent cursor-pointer text-sm font-bold transition-all duration-300 flex items-center justify-center h-[100px] ${activeTab === 'dashboard' ? 'bg-white text-primary shadow-lg border-t-4 border-t-[#3498db] -mt-1' : 'text-gray-600 hover:bg-white hover:text-primary'}`} style={{gap: '15px'}} onClick={() => setActiveTab('dashboard')}><img src="/images/dashboard.png" alt="dashboard" style={{height: '100px', width: '100px', objectFit: 'contain'}} /><span>Dashboard</span></button>
+          <button className={`flex-1 p-5 border-none bg-transparent cursor-pointer text-sm font-bold transition-all duration-300 flex items-center justify-center h-[100px] ${activeTab === 'register' ? 'bg-white text-primary shadow-lg border-t-4 border-t-[#3498db] -mt-1' : 'text-gray-600 hover:bg-white hover:text-primary'}`} style={{gap: '15px'}} onClick={() => setActiveTab('register')}><img src="/images/register.png" alt="register" style={{height: '100px', width: '100px', objectFit: 'contain'}} />Register</button>
+          <button className={`flex-1 p-5 border-none bg-transparent cursor-pointer text-sm font-bold transition-all duration-300 flex items-center justify-center h-[100px] ${activeTab === 'reading' ? 'bg-white text-primary shadow-lg border-t-4 border-t-[#3498db] -mt-1' : 'text-gray-600 hover:bg-white hover:text-primary'}`} style={{gap: '15px'}} onClick={() => setActiveTab('reading')}><img src="/images/meter.png" alt="meter" style={{height: '100px', width: '100px', objectFit: 'contain'}} />Meter Reading</button>
+          <button className={`flex-1 p-5 border-none bg-transparent cursor-pointer text-sm font-bold transition-all duration-300 flex items-center justify-center h-[100px] ${activeTab === 'payment' ? 'bg-white text-primary shadow-lg border-t-4 border-t-[#3498db] -mt-1' : 'text-gray-600 hover:bg-white hover:text-primary'}`} style={{gap: '15px'}} onClick={() => setActiveTab('payment')}><img src="/images/payment.png" alt="payment" style={{height: '100px', width: '100px', objectFit: 'contain'}} />Pay Bill</button>
         </nav>
 
         <div className="p-8">
@@ -449,7 +453,10 @@ function App() {
           {/* Shows dashboard content ONLY when activeTab === 'dashboard' (BOOLEAN comparison) */}
           {activeTab === 'dashboard' && (
             <div>
-              <h2 className="text-primary text-2xl font-bold mb-6 pb-3 border-b-2 border-gray-200"><img src="/images/account-list.png" alt="accounts" style={{height: '28px', marginRight: '8px'}} />Account Masterlist</h2>
+              <div className="mb-6 pb-3 border-b-2 border-gray-200 flex items-center gap-1" style={{height: '120px'}}>
+                <img src="/images/dashboard.png" alt="accounts" style={{height: '200px', objectFit: 'contain'}} />
+                <h2 className="text-primary text-2xl font-bold m-0">Account Masterlist</h2>
+              </div>
               <div className="flex gap-3 mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-xl shadow-sm border border-blue-100">
                 <input type="text" placeholder="Search..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="flex-[2] py-2 px-3 border border-[#ddd] rounded" />
                 <select value={filterType} onChange={(e) => setFilterType(e.target.value)} className="flex-1 py-2 px-3 border border-[#ddd] rounded cursor-pointer">
@@ -463,12 +470,12 @@ function App() {
               <table className="w-full border-collapse mt-4 shadow-md rounded-xl overflow-hidden">
                 <thead>
                   <tr className="bg-gradient-to-r from-[#2c3e50] to-[#34495e]">
-                    <th className="p-4 text-left text-white font-bold text-sm"><img src="/images/id.png" alt="id" style={{height: '18px', marginRight: '6px'}} />Acct ID</th>
-                    <th className="p-4 text-left text-white font-bold text-sm"><img src="/images/customer.png" alt="customer" style={{height: '18px', marginRight: '6px'}} />Customer</th>
-                    <th className="p-4 text-left text-white font-bold text-sm"><img src="/images/type.png" alt="type" style={{height: '18px', marginRight: '6px'}} />Type</th>
-                    <th className="p-4 text-left text-white font-bold text-sm"><img src="/images/balance.png" alt="balance" style={{height: '18px', marginRight: '6px'}} />Balance</th>
-                    <th className="p-4 text-left text-white font-bold text-sm"><img src="/images/reading.png" alt="reading" style={{height: '18px', marginRight: '6px'}} />Last Reading</th>
-                    <th className="p-4 text-left text-white font-bold text-sm"><img src="/images/action.png" alt="action" style={{height: '18px', marginRight: '6px'}} />Action</th>
+                    <th className="p-4 text-left text-white font-bold text-sm"><img src="/images/id.png" alt="id" style={{height: '60px', maxWidth: '30px', marginRight: '8px', display: 'inline-block', verticalAlign: 'middle', objectFit: 'contain'}} />Acct ID</th>
+                    <th className="p-4 text-left text-white font-bold text-sm"><img src="/images/register.png" alt="customer" style={{height: '60px', maxWidth: '30px', marginRight: '8px', display: 'inline-block', verticalAlign: 'middle', objectFit: 'contain'}} />Customer</th>
+                    <th className="p-4 text-left text-white font-bold text-sm"><img src="/images/type.png" alt="type" style={{height: '60px', maxWidth: '30px', marginRight: '8px', display: 'inline-block', verticalAlign: 'middle', objectFit: 'contain'}} />Type</th>
+                    <th className="p-4 text-left text-white font-bold text-sm"><img src="/images/balance.png" alt="balance" style={{height: '60px', maxWidth: '30px', marginRight: '8px', display: 'inline-block', verticalAlign: 'middle', objectFit: 'contain'}} />Balance</th>
+                    <th className="p-4 text-left text-white font-bold text-sm"><img src="/images/reading.png" alt="reading" style={{height: '60px', maxWidth: '30px', marginRight: '8px', display: 'inline-block', verticalAlign: 'middle', objectFit: 'contain'}} />Last Reading</th>
+                    <th className="p-4 text-left text-white font-bold text-sm"><img src="/images/action.png" alt="action" style={{height: '60px', maxWidth: '30px', marginRight: '8px', display: 'inline-block', verticalAlign: 'middle', objectFit: 'contain'}} />Action</th>
                   </tr>
                 </thead>
                 <tbody className="bg-white">
@@ -489,7 +496,7 @@ function App() {
                       
                       <td className="p-4 text-left"><strong className="text-gray-800">{acc.lastReading}</strong> <small className="text-gray-500">{RATES[acc.type].unit}</small></td>
                       <td className="p-4 text-left">
-                        <button className="bg-gradient-to-r from-yellow-400 to-yellow-500 border-none py-2 px-4 rounded-lg cursor-pointer text-xs text-gray-800 hover:from-yellow-500 hover:to-yellow-600 transition-all duration-200 font-semibold shadow-md hover:shadow-lg flex items-center gap-2" onClick={() => printStatement(acc)}><img src="/images/print.png" alt="print" style={{height: '16px'}} />Print</button>
+                        <button className="bg-gradient-to-r from-yellow-400 to-yellow-500 border-none py-2 px-4 rounded-lg cursor-pointer text-xs text-gray-800 hover:from-yellow-500 hover:to-yellow-600 transition-all duration-200 font-semibold shadow-md hover:shadow-lg flex items-center gap-2" onClick={() => printStatement(acc)}><img src="/images/print.png" alt="print" style={{height: '22px'}} />Print</button>
                       </td>
                     </tr>
                   ))}
@@ -513,7 +520,7 @@ function App() {
           
           {activeTab === 'register' && (
              <form className="max-w-[550px] mx-auto p-10 border-2 border-gray-200 rounded-2xl bg-gradient-to-br from-white to-gray-50 shadow-xl" onSubmit={registerCustomer}>
-              <h2 className="mt-0 text-primary text-2xl font-bold border-b-2 border-b-blue-200 pb-4 mb-6"><img src="/images/register-form.png" alt="register" style={{height: '28px', marginRight: '8px'}} />Customer Registration</h2>
+              <h2 className="mt-0 text-primary text-2xl font-bold border-b-2 border-b-blue-200 pb-4 mb-6"><img src="../images/register.png" alt="register" style={{height: '1000px', marginRight: '80px'}} />Customer Registration</h2>
               <label className="block mt-6 mb-2 font-bold text-gray-700 text-sm">Customer Name</label><input required value={regForm.name} onChange={e => setRegForm({...regForm, name: e.target.value})} className="w-full p-4 border-2 border-gray-300 rounded-lg box-border focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-all font-medium" placeholder="Enter customer name" />
               <label className="block my-4 mb-1.5 font-bold text-[#555]">Service Type</label>
               <select value={regForm.type} onChange={e => setRegForm({...regForm, type: e.target.value})} className="w-full p-2.5 border border-[#ccc] rounded box-border">
@@ -525,7 +532,7 @@ function App() {
 
           {activeTab === 'reading' && (
              <form className="max-w-[550px] mx-auto p-10 border-2 border-gray-200 rounded-2xl bg-gradient-to-br from-white to-gray-50 shadow-xl" onSubmit={generateBill}>
-              <h2 className="mt-0 text-primary text-2xl font-bold border-b-2 border-b-blue-200 pb-4 mb-6"><img src="/images/meter-form.png" alt="meter" style={{height: '28px', marginRight: '8px'}} />Input Usage</h2>
+              <h2 className="mt-0 text-primary text-2xl font-bold border-b-2 border-b-blue-200 pb-4 mb-6 flex items-center gap-3"><img src="/images/meter-form.png" alt="meter" style={{height: '35px'}} />Input Usage</h2>
               <label className="block mt-6 mb-2 font-bold text-gray-700 text-sm">Select Account</label>
               <select required value={readingForm.accountId} onChange={e => setReadingForm({...readingForm, accountId: e.target.value})} className="w-full p-4 border-2 border-gray-300 rounded-lg box-border focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 font-medium bg-white transition-all cursor-pointer">
                 <option value="">-- Select Customer --</option>
@@ -551,13 +558,13 @@ function App() {
                  </div>
               )}
               <label className="block mt-6 mb-2 font-bold text-gray-700 text-sm">New Meter Reading</label><input required type="number" value={readingForm.currentReading} onChange={e => setReadingForm({...readingForm, currentReading: e.target.value})} className="w-full p-4 border-2 border-gray-300 rounded-lg box-border focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-all font-medium" placeholder="Enter meter reading" />
-              <button type="submit" className="w-full mt-8 p-4 bg-gradient-to-r from-[#3498db] to-[#2980b9] text-white border-none rounded-lg cursor-pointer text-base font-bold hover:from-[#2980b9] hover:to-[#3498db] transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"><img src="/images/bill.png" alt="bill" style={{height: '18px'}} />Generate Bill</button>
+              <button type="submit" className="w-full mt-8 p-4 bg-gradient-to-r from-[#3498db] to-[#2980b9] text-white border-none rounded-lg cursor-pointer text-base font-bold hover:from-[#2980b9] hover:to-[#3498db] transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"><img src="/images/bill.png" alt="bill" style={{height: '24px'}} />Generate Bill</button>
             </form>
           )}
 
           {activeTab === 'payment' && (
              <form className="max-w-[550px] mx-auto p-10 border-2 border-gray-200 rounded-2xl bg-gradient-to-br from-white to-gray-50 shadow-xl" onSubmit={processPayment}>
-              <h2 className="mt-0 text-primary text-2xl font-bold border-b-2 border-b-blue-200 pb-4 mb-6"><img src="/images/payment-form.png" alt="payment" style={{height: '28px', marginRight: '8px'}} />Payment Processing</h2>
+              <h2 className="mt-0 text-primary text-2xl font-bold border-b-2 border-b-blue-200 pb-4 mb-6 flex items-center gap-3"><img src="/images/payment-form.png" alt="payment" style={{height: '35px'}} />Payment Processing</h2>
               <label className="block mt-6 mb-2 font-bold text-gray-700 text-sm">Select Account</label>
               <select required value={payForm.accountId} onChange={e => setPayForm({...payForm, accountId: e.target.value})} className="w-full p-4 border-2 border-gray-300 rounded-lg box-border focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 font-medium bg-white transition-all cursor-pointer">
                 <option value="">-- Select Customer --</option>
@@ -568,7 +575,7 @@ function App() {
                 {accounts.filter(a => a.balance > 0).map(acc => <option key={acc.id} value={acc.id}>{acc.name} (Due: ${acc.balance?.toFixed(2)})</option>)}
               </select>
               <label className="block mt-6 mb-2 font-bold text-gray-700 text-sm">Payment Amount ($)</label><input required type="number" step="0.01" value={payForm.amount} onChange={e => setPayForm({...payForm, amount: e.target.value})} className="w-full p-4 border-2 border-gray-300 rounded-lg box-border focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-all font-medium" placeholder="Enter payment amount" />
-              <button type="submit" className="w-full mt-8 p-4 bg-gradient-to-r from-[#27ae60] to-[#229954] text-white border-none rounded-lg cursor-pointer text-base font-bold hover:from-[#229954] hover:to-[#27ae60] transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"><img src="/images/process-payment.png" alt="payment" style={{height: '18px'}} />Process Payment</button>
+              <button type="submit" className="w-full mt-8 p-4 bg-gradient-to-r from-[#27ae60] to-[#229954] text-white border-none rounded-lg cursor-pointer text-base font-bold hover:from-[#229954] hover:to-[#27ae60] transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"><img src="/images/process-payment.png" alt="payment" style={{height: '24px'}} />Process Payment</button>
             </form>
           )}
         </div>
