@@ -329,7 +329,8 @@ function App() {
   // ============================================
   // JSX combines HTML-like markup with JavaScript expressions
   return (
-    <div className="max-w-[1000px] my-8 mx-auto bg-white min-h-[85vh] shadow-2xl rounded-2xl overflow-hidden border border-gray-100" style={{backgroundColor: darkMode ? '#2a2a2a' : '#ffffff', borderColor: darkMode ? '#444444' : '#e5e5e5', transition: 'all 0.3s'}}>
+    <div style={{backgroundColor: darkMode ? '#3a3a3a' : '#f5f5f5', transition: 'all 0.3s', minHeight: '100vh', padding: '20px'}}>
+      <div className="max-w-[1000px] mx-auto bg-white min-h-[85vh] shadow-2xl rounded-2xl overflow-hidden border border-gray-100" style={{backgroundColor: darkMode ? '#3a3a3a' : '#ffffff', borderColor: darkMode ? '#4a4a4a' : '#e5e5e5', transition: 'all 0.3s'}}>
       <style>{`
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideUp { from { transform: translateY(20px); } to { transform: translateY(0); } }
@@ -432,8 +433,8 @@ function App() {
       </Modal>
 
       {/* MAIN UI */}
-      <div className="screen-only" style={{backgroundColor: darkMode ? '#1a1a1a' : '#ffffff', color: darkMode ? '#ffffff' : '#000000', transition: 'all 0.3s'}}>
-        <header className="bg-gradient-to-r from-[#2c3e50] to-[#34495e] text-white p-8 text-center shadow-lg relative">
+      <div className="screen-only" style={{backgroundColor: darkMode ? '#1B1111' : '#ffffff', color: darkMode ? '#ffffff' : '#000000', transition: 'all 0.3s'}}>
+        <header className="bg-gradient-to-r from-[#2c3e50] to-[#34495e] text-white p-8 text-center shadow-lg relative" style={{opacity: darkMode ? 0.8 : 1, backgroundColor: darkMode ? '#1B1111' : undefined}}>
           <button onClick={() => setDarkMode(!darkMode)} className="absolute right-8 top-8 bg-white text-[#2c3e50] border-none py-2 px-4 rounded-lg cursor-pointer font-bold shadow-md hover:shadow-lg transition-all" style={{opacity: 0.9}}>{darkMode ? '☀️ Light' : '🌙 Dark'}</button>
           <div className="flex items-center justify-center gap-4">
             <h1 className="m-0 text-3xl font-bold tracking-wide">BillEase</h1>
@@ -450,14 +451,14 @@ function App() {
           <button className={`flex-1 p-5 border-none bg-transparent cursor-pointer text-sm font-bold transition-all duration-300 flex items-center justify-center h-[100px] ${activeTab === 'payment' ? 'bg-white text-primary shadow-lg border-t-4 border-t-[#3498db] -mt-1' : 'text-gray-600 hover:bg-white hover:text-primary'}`} style={{gap: '15px'}} onClick={() => setActiveTab('payment')}><img src="/images/payment.png" alt="payment" style={{height: '100px', maxWidth: '60px', objectFit: 'contain'}} />Pay Bill</button>
         </nav>
 
-        <div className="p-8">
+        <div className="p-8" style={{backgroundColor: darkMode ? '#1B1111' : '#ffffff', color: darkMode ? '#ffffff' : '#000000', transition: 'all 0.3s'}}>
           {/* CONTROL STRUCTURE: Conditional Rendering (&&) */}
           {/* Shows dashboard content ONLY when activeTab === 'dashboard' (BOOLEAN comparison) */}
           {activeTab === 'dashboard' && (
             <div>
               <div className="mb-6 pb-3 border-b-2 border-gray-200 flex items-center gap-1" style={{height: '120px'}}>
                 <img src="/images/dashboard.png" alt="accounts" style={{height: '200px', objectFit: 'contain'}} />
-                <h2 className="text-primary text-2xl font-bold m-0">Account Masterlist</h2>
+                <h2 className="text-primary text-2xl font-bold m-0" style={{color: darkMode ? '#ffffff' : undefined}}>Account Masterlist</h2>
               </div>
               <div className="flex gap-3 mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-xl shadow-sm border border-blue-100">
                 <input type="text" placeholder="Search..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="flex-[2] py-2 px-3 border border-[#ddd] rounded" />
@@ -521,8 +522,8 @@ function App() {
           {/* Each tab shows different content based on activeTab STRING value */}
           
           {activeTab === 'register' && (
-             <form className="max-w-[550px] mx-auto p-10 border-2 border-gray-200 rounded-2xl bg-gradient-to-br from-white to-gray-50 shadow-xl" onSubmit={registerCustomer}>
-              <h2 className="mt-0 text-primary text-2xl font-bold border-b-2 border-b-blue-200 pb-4 mb-6 flex items-center gap-3"><img src="/images/register.png" alt="register" style={{height: '50px', maxWidth: '40px', marginRight: '8px', objectFit: 'contain'}} />Customer Registration</h2>
+             <form className="max-w-[550px] mx-auto p-10 border-2 border-gray-200 rounded-2xl bg-gradient-to-br from-white to-gray-50 shadow-xl" onSubmit={registerCustomer} style={{backgroundColor: darkMode ? '#2a2a2a' : undefined, borderColor: darkMode ? '#444444' : undefined, color: darkMode ? '#ffffff' : '#000000'}}>
+              <h2 className="mt-0 text-primary text-2xl font-bold border-b-2 border-b-blue-200 pb-4 mb-6 flex items-center gap-3" style={{color: darkMode ? '#ffffff' : undefined, borderColor: darkMode ? '#444444' : undefined}}><img src="/images/register.png" alt="register" style={{height: '50px', maxWidth: '40px', marginRight: '8px', objectFit: 'contain'}} />Customer Registration</h2>
               <label className="block mt-6 mb-2 font-bold text-gray-700 text-sm">Customer Name</label><input required value={regForm.name} onChange={e => setRegForm({...regForm, name: e.target.value})} className="w-full p-4 border-2 border-gray-300 rounded-lg box-border focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-all font-medium" placeholder="Enter customer name" />
               <label className="block my-4 mb-1.5 font-bold text-[#555]">Service Type</label>
               <select value={regForm.type} onChange={e => setRegForm({...regForm, type: e.target.value})} className="w-full p-2.5 border border-[#ccc] rounded box-border">
@@ -533,8 +534,8 @@ function App() {
           )}
 
           {activeTab === 'reading' && (
-             <form className="max-w-[550px] mx-auto p-10 border-2 border-gray-200 rounded-2xl bg-gradient-to-br from-white to-gray-50 shadow-xl" onSubmit={generateBill}>
-              <h2 className="mt-0 text-primary text-2xl font-bold border-b-2 border-b-blue-200 pb-4 mb-6 flex items-center gap-3"><img src="/images/meter.png" alt="meter" style={{height: '50px', maxWidth: '40px', objectFit: 'contain'}} />Input Usage</h2>
+             <form className="max-w-[550px] mx-auto p-10 border-2 border-gray-200 rounded-2xl bg-gradient-to-br from-white to-gray-50 shadow-xl" onSubmit={generateBill} style={{backgroundColor: darkMode ? '#2a2a2a' : undefined, borderColor: darkMode ? '#444444' : undefined, color: darkMode ? '#ffffff' : '#000000'}}>
+              <h2 className="mt-0 text-primary text-2xl font-bold border-b-2 border-b-blue-200 pb-4 mb-6 flex items-center gap-3" style={{color: darkMode ? '#ffffff' : undefined, borderColor: darkMode ? '#444444' : undefined}}><img src="/images/meter.png" alt="meter" style={{height: '50px', maxWidth: '40px', objectFit: 'contain'}} />Input Usage</h2>
               <label className="block mt-6 mb-2 font-bold text-gray-700 text-sm">Select Account</label>
               <select required value={readingForm.accountId} onChange={e => setReadingForm({...readingForm, accountId: e.target.value})} className="w-full p-4 border-2 border-gray-300 rounded-lg box-border focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 font-medium bg-white transition-all cursor-pointer">
                 <option value="">-- Select Customer --</option>
@@ -565,8 +566,8 @@ function App() {
           )}
 
           {activeTab === 'payment' && (
-             <form className="max-w-[550px] mx-auto p-10 border-2 border-gray-200 rounded-2xl bg-gradient-to-br from-white to-gray-50 shadow-xl" onSubmit={processPayment}>
-              <h2 className="mt-0 text-primary text-2xl font-bold border-b-2 border-b-blue-200 pb-4 mb-6 flex items-center gap-3"><img src="/images/payment.png" alt="payment" style={{height: '50px', maxWidth: '40px', objectFit: 'contain'}} />Payment Processing</h2>
+             <form className="max-w-[550px] mx-auto p-10 border-2 border-gray-200 rounded-2xl bg-gradient-to-br from-white to-gray-50 shadow-xl" onSubmit={processPayment} style={{backgroundColor: darkMode ? '#2a2a2a' : undefined, borderColor: darkMode ? '#444444' : undefined, color: darkMode ? '#ffffff' : '#000000'}}>
+              <h2 className="mt-0 text-primary text-2xl font-bold border-b-2 border-b-blue-200 pb-4 mb-6 flex items-center gap-3" style={{color: darkMode ? '#ffffff' : undefined, borderColor: darkMode ? '#444444' : undefined}}><img src="/images/payment.png" alt="payment" style={{height: '50px', maxWidth: '40px', objectFit: 'contain'}} />Payment Processing</h2>
               <label className="block mt-6 mb-2 font-bold text-gray-700 text-sm">Select Account</label>
               <select required value={payForm.accountId} onChange={e => setPayForm({...payForm, accountId: e.target.value})} className="w-full p-4 border-2 border-gray-300 rounded-lg box-border focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 font-medium bg-white transition-all cursor-pointer">
                 <option value="">-- Select Customer --</option>
@@ -581,6 +582,7 @@ function App() {
             </form>
           )}
         </div>
+      </div>
       </div>
     </div>
   );
