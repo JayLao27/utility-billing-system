@@ -679,7 +679,7 @@ function App() {
                   value={regForm.name}
                   onChange={(e) => {
                     const onlyLetters = e.target.value.replace(
-                      /[^a-zA-Z\s.]/g,
+                      /[^a-zA-Z\s]/g,
                       ""
                     );
                     setRegForm({ ...regForm, name: onlyLetters });
